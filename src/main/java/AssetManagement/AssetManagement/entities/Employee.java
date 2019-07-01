@@ -77,15 +77,20 @@ public class Employee implements Serializable {
     private String phoneNumber;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 5)
     @Column(name = "is_delete")
-    private boolean isDelete;
-    @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
+    private String isDelete;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "manager", fetch = FetchType.LAZY)
     private List<Employee> employeeList;
     @JoinColumn(name = "manager", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Employee manager;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
     private List<EmployeeJob> employeeJobList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
+    private List<RepairRequest> repairRequestList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
+    private List<LoaningRequest> loaningRequestList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
     private Account account;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
@@ -98,17 +103,15 @@ public class Employee implements Serializable {
         this.id = id;
     }
 
-    public Employee(String id, String firstName, String lastName, String email,  String phoneNumber,int salary, Employee manager) {
+    public Employee(String id, String firstName, String lastName, String email, int salary, String phoneNumber, String isDelete) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.phoneNumber = phoneNumber;
         this.salary = salary;
-        this.manager = manager;
+        this.phoneNumber = phoneNumber;
+        this.isDelete = isDelete;
     }
-
-
 
     public String getId() {
         return id;
@@ -158,11 +161,11 @@ public class Employee implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean getIsDelete() {
+    public String getIsDelete() {
         return isDelete;
     }
 
-    public void setIsDelete(boolean isDelete) {
+    public void setIsDelete(String isDelete) {
         this.isDelete = isDelete;
     }
 
@@ -190,6 +193,24 @@ public class Employee implements Serializable {
 
     public void setEmployeeJobList(List<EmployeeJob> employeeJobList) {
         this.employeeJobList = employeeJobList;
+    }
+
+    @XmlTransient
+    public List<RepairRequest> getRepairRequestList() {
+        return repairRequestList;
+    }
+
+    public void setRepairRequestList(List<RepairRequest> repairRequestList) {
+        this.repairRequestList = repairRequestList;
+    }
+
+    @XmlTransient
+    public List<LoaningRequest> getLoaningRequestList() {
+        return loaningRequestList;
+    }
+
+    public void setLoaningRequestList(List<LoaningRequest> loaningRequestList) {
+        this.loaningRequestList = loaningRequestList;
     }
 
     public Account getAccount() {

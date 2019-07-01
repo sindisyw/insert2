@@ -5,9 +5,7 @@
  */
 package AssetManagement.AssetManagement.repository;
 
-import AssetManagement.AssetManagement.entities.Employee;
-import java.util.List;
-import org.springframework.data.jpa.repository.Query;
+import AssetManagement.AssetManagement.entities.Asset;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Repository;
  * @author HP
  */
 @Repository
-public interface EmployeeRepository extends CrudRepository<Employee, String>{
-    @Query(value = "SELECT * FROM employee e WHERE e.is_delete = 'false'", nativeQuery = true)
-    List<Employee> getAll();
+public interface AssetRepository extends CrudRepository<Asset, String>{
+    
 }

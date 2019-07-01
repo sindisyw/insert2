@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="author" content="Dashboard">
         <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-        <title>Job | Asset Management </title>
+        <title>Loaning Request | Asset Management </title>
 
         <!-- Favicons -->
         <link href="dist/img/favicon.png" rel="icon">
@@ -258,8 +258,8 @@
                             </a>
                             <ul class="sub">
                                 <li><a th:href="@{/employee}">Employee</a></li>
-                                <li class="active"><a th:href="@{/job&role}"> Job & Role</a></li>
-                                <li><a th:href="@{/asset}"> Asset</a></li>
+                                <li><a th:href="@{/job&role}"> Job & Role</a></li>
+                                <li class="active"><a th:href="@{/asset}"> Asset</a></li>
                                 
                             </ul>
                         </li>
@@ -284,75 +284,45 @@
             <!--EMPLOYEE MANAGEMENT start-->          
             <section id="main-content">
                 <section class="wrapper">
-                    <h3><i class="fa fa-angle-right"></i>   Job  Management </h3>
+                    <h3><i class="fa fa-angle-right"></i>   ASSET MANAGEMENT </h3>
                     <div class="row mb">
                         <div class="col-md-12">
                             <!-- page start-->
                             <div class="panel">
-                                <button class="btn btn-lg pull-right mb" style="color: white; background-color: #4ECDC4" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add New Job</button>
-                                <br><br>
+                                <br>
                                 <div class="adv-table">
                                     <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="hidden-table-info">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>JOB NAME</th>
+                                                <th>NAME</th>
+                                                <th>CATEGORY</th>
+                                                <th>QUANTITY</th>
+                                                <th>DETAIL</th>
                                                 <th>ACTION</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr th:each="job:${dataJob}">
-                                                <td th:text="${job.id}"></td>
-                                                <td th:text="${job.name}"></td>
-                                                
+                                            <tr th:each="asset:${dataAsset}">
+                                                <td th:text="${asset.id}"></td>
+                                                <td th:text="${asset.name}"></td>
+                                                <td th:text="${asset.category.name}"></td>
+                                                <td th:text="${asset.quantity}"></td>
                                                 <td>
-                                                    <button class="btn btn-success btn btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i>Edit</button>
-                                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#softdelete"><i class="fa fa-trash"></i>Delete</button>
+                                                <a th:each="list:${asset.detailAssetList}">
+                                                    <p th:text="${list.spesification}"></p></a>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-primary btn btn-sm" data-toggle="modal" data-target="#editModal"><i class="fa fa-check"></i> Edit</button>
                                                 </td>
                                             </tr>
-
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            <!-- page end-->
                         </div>
                     </div>
-                    <!-- /row -->
-                    <h3><i class="fa fa-angle-right"></i>   Role  Management </h3>
-                    <div class="row mb">
-                        <div class="col-md-12">
-                            <!-- page start-->
-                            <div class="panel">
-                                <button class="btn btn-lg pull-right mb" style="color: white; background-color: #4ECDC4" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add New Job</button>
-                                <br><br>
-                                <div class="adv-table">
-                                    <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="hidden-table-info2">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>ROLE NAME</th>
-                                                <th>ACTION</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr th:each="role:${dataRole}">
-                                                <td th:text="${role.id}"></td>
-                                                <td th:text="${role.name}"></td>
-                                                
-                                                <td>
-                                                    <button class="btn btn-success btn btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i>Edit</button>
-                                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#softdelete"><i class="fa fa-trash"></i>Delete</button>
-                                                </td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- page end-->
-                        </div>
-                    </div>
+                    
                 </section> 
             </section>
             <!--EMPLOYEE MANAGEMENT end-->            
@@ -371,140 +341,6 @@
             </div>
         </footer>
         <!--footer end-->
-
-        <!-- Modal Add -->
-        <div class="modal fade" id="myModal" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Add Employee</h4>
-                        <button type="btn btn-lg" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                    </div>
-                    <div class="modal-body">                       
-                        <div class="form-panel">
-                            <form th:action="@{/addData}" method="post" class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="firstname" class="col-sm-3  control-label">First Name</label>
-                                    <div class="col-sm-9">
-                                        <input id="firstName" name="firstName" type="text" class="form-control" placeholder="input first name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lastname" class="col-sm-3  control-label">Last Name</label>
-                                    <div class="col-sm-9">
-                                        <input id="lastName" name="lastName" type="text" class="form-control" placeholder="input last name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email" class="col-sm-3  control-label">Email</label>
-                                    <div class="col-sm-9">
-                                        <input id="email" name="email" type="text" class="form-control" placeholder="input email">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="phonenumber" class="col-sm-3  control-label">Phone Number</label>
-                                    <div class="col-sm-9">
-                                        <input id="phoneNumber" name="phoneNumber" type="text" class="form-control" placeholder="input phone number">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="salary" class="col-sm-3  control-label">Salary</label>
-                                    <div class="col-sm-9">
-                                        <input id="salary" name="salary" type="number" class="form-control" placeholder="input salary">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="manager" class="col-sm-3 control-label">Manager</label>
-                                    <div class="col-sm-9">
-                                        <select name="manager" id="manager" class="form-control">
-                                            <option value="">-- Select Manager --</option>
-                                            <option th:each="data:${dataEmp}" th:value="${data.id}" th:text="${data.firstName}"></option>
-
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success" id="confirm">Save</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Modal Edit-->
-        <div class="modal fade" id="editModal" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Add Employee</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    </div>
-                    <div class="modal-body">                       
-                        <div class="form-panel">
-                            <form th:action="@{/addData}" method="post" class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="firstname" class="col-sm-3  control-label">First Name</label>
-                                    <div class="col-sm-9">
-                                        <input id="firstName" name="firstName" type="text" class="form-control" placeholder="input first name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lastname" class="col-sm-3  control-label">Last Name</label>
-                                    <div class="col-sm-9">
-                                        <input id="lastName" name="lastName" type="text" class="form-control" placeholder="input last name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email" class="col-sm-3  control-label">Email</label>
-                                    <div class="col-sm-9">
-                                        <input id="email" name="email" type="text" class="form-control" placeholder="input email">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="phonenumber" class="col-sm-3  control-label">Phone Number</label>
-                                    <div class="col-sm-9">
-                                        <input id="phoneNumber" name="phoneNumber" type="text" class="form-control" placeholder="input phone number">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="salary" class="col-sm-3  control-label">Salary</label>
-                                    <div class="col-sm-9">
-                                        <input id="salary" name="salary" type="number" class="form-control" placeholder="input salary">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="manager" class="col-sm-3 control-label">Manager</label>
-                                    <div class="col-sm-9">
-                                        <select name="manager" id="manager" class="form-control">
-                                            <option value="">-- Select Manager --</option>
-                                            <option th:each="data:${dataEmp}" th:value="${data.id}" th:text="${data.firstName}"></option>
-
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success" id="confirm">Save</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal Delete -->
-        
-
 
         <!-- js placed at the end of the document so the pages load faster -->
         <div>
@@ -530,6 +366,7 @@
                     }); 
                 });
             </script>
+            
         </div>
     </body>
 

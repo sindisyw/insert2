@@ -5,7 +5,7 @@
  */
 package AssetManagement.AssetManagement.repository;
 
-import AssetManagement.AssetManagement.entities.EmployeeRole;
+import AssetManagement.AssetManagement.entities.LoaningRequest;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
  * @author HP
  */
 @Repository
-public interface EmployeeRoleRepository extends CrudRepository<EmployeeRole, String>{
+public interface LoanRepository extends CrudRepository<LoaningRequest, String>{
     
 }

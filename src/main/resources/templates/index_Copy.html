@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <!--logo start-->
-                <a href="/" class="logo"><b>ACE<span>MAN</span></b></a>
+                <a th:href="@{/}" class="logo"><b>ACE<span>MAN</span></b></a>
                 <!--logo end-->
                 <div class="nav notify-row" id="top_menu">
                     <!--  notification start -->
@@ -251,8 +251,10 @@
                             </a>
                             <ul class="sub">
                                 <li><a th:href="@{/employee}">Employee</a></li>
-                                <li><a th:href="@{/job&role}">Job & Role</a></li>
+                                <li><a th:href="@{/job&role}"> Job & Role</a></li>
+                                <li><a th:href="@{/asset}"> Asset</a></li>
                             </ul>
+                            
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
@@ -260,9 +262,8 @@
                                 <span>Approval Request</span>
                             </a>
                             <ul class="sub">
-                                <li><a th:href="@{/}">Loan Request</a></li>
-                                <li><a th:href="@{/}">Repair Request</a></li>
-                                <li><a th:href="@{/}">History</a></li>                                
+                                <li><a th:href="@{/request}">Request</a></li>
+                                <li><a th:href="@{/history}">History</a></li>                                
                             </ul>
                         </li>
                         
