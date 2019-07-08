@@ -7,13 +7,13 @@ package AssetManagement.AssetManagement.controllers;
 
 import AssetManagement.AssetManagement.entities.Employee;
 import AssetManagement.AssetManagement.repository.EmployeeRepository;
-import AssetManagement.AssetManagement.services.AccountServices;
-import AssetManagement.AssetManagement.services.AssetServices;
-import AssetManagement.AssetManagement.services.EmployeeServices;
-import AssetManagement.AssetManagement.services.JobServices;
-import AssetManagement.AssetManagement.services.LoanServices;
-import AssetManagement.AssetManagement.services.RepairServices;
-import AssetManagement.AssetManagement.services.RoleServices;
+import AssetManagement.AssetManagement.services.AccountService;
+import AssetManagement.AssetManagement.services.AssetService;
+import AssetManagement.AssetManagement.services.EmployeeJobService;
+import AssetManagement.AssetManagement.services.JobService;
+import AssetManagement.AssetManagement.services.LoanService;
+import AssetManagement.AssetManagement.services.RepairService;
+import AssetManagement.AssetManagement.services.RoleService;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,73 +36,50 @@ public class MainController {
     @Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
-    private EmployeeServices employeeServices;
+    private EmployeeJobService employeeServices;
     @Autowired
-    private AccountServices accountServices;
+    private AccountService accountServices;
     @Autowired
-    private JobServices jobServices;
+    private JobService jobServices;
     @Autowired
-    private RoleServices roleServices;
+    private RoleService roleServices;
     @Autowired
-    private LoanServices loanServices;
+    private LoanService loanServices;
     @Autowired
-    private RepairServices repairServices;
+    private RepairService repairServices;
     @Autowired
-    private AssetServices assetServices;
-    
+    private AssetService assetServices;
 
-    @GetMapping("/")
-    public String index(Model model) {
-        return "index_Copy";
-    }
-
-    @GetMapping("/login")
-    public String login(Model model) {
+    @RequestMapping(value = {"/", "", "/login"}, method = RequestMethod.GET)
+    public String login() {
         return "login";
     }
-
-    @GetMapping("/employee")
-    public String index2(Model model) {
-        model.addAttribute("dataEmp", employeeRepository.getAll());
-        model.addAttribute("dataAcc", accountServices.findAll());
-        return "employee";
-    }
-
-    @GetMapping("/job&role")
-    public String job(Model model) {
-        model.addAttribute("dataJob", jobServices.findAll());
-        model.addAttribute("dataRole",roleServices.findAll());
-        return "job";
-    }
     
+    @GetMapping("/home")
+    public String index(Model model) {
+        return "dashboard/home";
+    }
+
+//    @GetMapping("/login")
+//    public String login(Model model) {
+//        return "login";
+//    }
+
     @GetMapping("/request")
     public String loaning(Model model) {
         model.addAttribute("dataLoaning", loanServices.findAll());
         model.addAttribute("dataRepair", repairServices.findAll());
         return "request";
     }
+
     @GetMapping("/history")
     public String history(Model model) {
         model.addAttribute("dataLoaning", loanServices.findAll());
         model.addAttribute("dataRepair", repairServices.findAll());
         return "history";
     }
-    @GetMapping("/asset")
-    public String asset(Model model) {
-        model.addAttribute("dataAsset", assetServices.findAll());
-        return "asset";
-    }
 
-    
-
-    @PostMapping("/addData")
-    public String addData(Employee employee) {
-        employee.setId("0");
-        employee.setIsDelete("false");
-        employeeRepository.save(employee);
-        return "redirect:/employee";
-    }
-
+  
     @GetMapping("/EmpController/softdelete/{id}")
     public String softDelete(@PathVariable("id") String id, Employee employee) {
         employee.setIsDelete("true");

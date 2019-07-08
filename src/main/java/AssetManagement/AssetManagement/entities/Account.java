@@ -51,7 +51,7 @@ public class Account implements Serializable {
     private String username;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 25)
+    @Size(min = 1, max = 255)
     @Column(name = "password")
     private String password;
     @Lob

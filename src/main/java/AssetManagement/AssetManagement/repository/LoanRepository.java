@@ -5,7 +5,9 @@
  */
 package AssetManagement.AssetManagement.repository;
 
+import AssetManagement.AssetManagement.entities.Employee;
 import AssetManagement.AssetManagement.entities.LoaningRequest;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +17,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface LoanRepository extends CrudRepository<LoaningRequest, String>{
-    
+    @Query(value = "SELECT * FROM loaning_request  WHERE id =?1", nativeQuery = true)
+    LoaningRequest getLoanById(String id);
 }

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head><title>Data-Employee</title></head>
+    <div th:replace="header :: headercss"></div>
+
+    <body>
+        <div th:replace="m_employee :: m_employee"></div>
+        <section id="container">
+            <!-- **********************************************************************************************************************************************************
+                TOP BAR CONTENT & NOTIFICATIONS
+                *********************************************************************************************************************************************************** -->
+            <!--header start-->
+            <header class="header black-bg">
+                <div class="sidebar-toggle-box">
+                    <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+                </div>
+                <!--logo start-->
+                <a th:href="@{/home}"class="logo"><b>Admin<span> LeReq</span></b></a>
+                <!--logo end-->
+
+                <div class="top-menu">
+                    <ul class="nav pull-right top-menu">
+                        <li><a class="logout" th:href="@{/login}">Logout</a></li>
+                    </ul>
+                </div>
+            </header>
+            <!--header end-->
+            <!-- **********************************************************************************************************************************************************
+                MAIN SIDEBAR MENU
+                *********************************************************************************************************************************************************** -->
+            <!--sidebar start-->
+            <aside>
+                <div id="sidebar" class="nav-collapse ">
+                    <!-- sidebar menu start-->
+                    <ul class="sidebar-menu" id="nav-accordion">
+                        <p class="centered"><a th:href="@{/user/profile}"><img src="dist/img/ui-sam.jpg" class="img-circle" width="80"></a></p>
+                        <h5 class="centered">Arif Fridasari</h5>
+                        <li class="mt">
+                            <a th:href="@{/home}">
+                                <i class="fa fa-dashboard"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sub-menu">
+                            <a class="active" href="dist/javascript:;">
+                                <i class="fa fa-th"></i>
+                                <span>Data</span>
+                            </a>
+                            <ul class="sub">
+                                <li><a th:href="@{/account}">Account</a></li>
+                                <li class="active"><a th:href="@{/employee}">Employee</a></li>
+                                <li><a th:href="@{/job}">Job</a></li>
+                                <li><a th:href="@{/role}">Role</a></li>
+                            </ul>
+                        </li>
+                        <li class="sub-menu">
+                            <a href="javascript:;">
+                                <i class="fa fa-tasks"></i>
+                                <span>Request</span>
+                            </a>
+                            <ul class="sub">
+                                <li><a th:href="@{/listrequest}">List Request</a></li>
+                                <li><a th:href="@{/history}">History</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <!-- sidebar menu end-->
+                </div>
+            </aside>
+            <!--sidebar end-->
+            <!-- **********************************************************************************************************************************************************
+                MAIN CONTENT
+                *********************************************************************************************************************************************************** -->
+            <!--main content start-->
+            <section id="main-content">
+                <section class="wrapper">
+                    <h3><i class="fa fa-angle-right"></i>  Table Employees</h3>
+                    <div class="row mb">
+                        <!-- page start-->
+
+                        <div class="content-panel">
+                            <button type="button" class="btn btn-primary" style="margin-bottom: 15px;" data-toggle="modal" data-target="#AddEmployee"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add Data</button>
+                            <div class="adv-table">
+                                <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="hidden-table-info">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Salary</th>
+                                            <th>Phone Number</th>
+                                            <th>Manager</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="Emp:${dataEmployee}">
+                                            <td th:text="${Emp.id}"></td>
+                                            <td th:text="${Emp.firstName+' '+Emp.lastName}"></td>
+                                            <td th:text="${Emp.email}"></td>
+                                            <td th:text="${Emp.salary}"></td>
+                                            <td th:text="${Emp.phoneNumber}"></td>
+                                            <td th:text="${Emp.manager.firstName+' '+Emp.manager.lastName}"></td>
+                                            <td>
+                                                <a th:href="@{/findEmp/(id=${Emp.id})}" class="btn btn-success btn btn-sm eBtn"><i class="fa fa-edit" ></i>Edit</a>
+                                                    
+                                                <!--<a  id="editEmp" type="button" class="btn btn-success btn-sm" th:href="@{/findEmp/(id=${Emp.id})}"><i class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>-->
+                                                <a type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>&nbsp;&nbsp;Delete</a>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- page end-->
+                    </div>
+                    <!-- /row -->
+                </section>
+                <!-- /wrapper -->
+            </section>
+        </section>
+
+        <div th:replace="footer :: footer"></div>
+    </body>
+
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="Dashboard">
+        <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+        <title>Dashboard | Asset Management</title>
+
+        <!-- Favicons -->
+        <link th:href="@{/dist/img/favicon.png}" rel="icon">
+        <link th:href="@{/dist/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+        <!-- Bootstrap core CSS -->
+        <link th:href="@{/dist/lib/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <!--external css-->
+        <link th:href="@{/dist/lib/font-awesome/css/font-awesome.css}" rel="stylesheet" />
+        <!--<link rel="stylesheet" type="text/css" th:href="@{/dist/css/zabuto_calendar.css}">-->
+        <link rel="stylesheet" type="text/css" th:href="@{/dist/lib/gritter/css/jquery.gritter.css}" />
+        <!-- Custom styles for this template -->
+        <link th:href="@{/dist/css/style.css}" rel="stylesheet">
+        <link th:href="@{/dist/css/style-responsive.css}" rel="stylesheet">
+        <script th:src="@{/dist/lib/chart-master/Chart.js}"></script>
+
+    </head>
+    <body>
+        <section id="container">
+            <!--header start-->
+            <header class="header black-bg">
+                <div class="sidebar-toggle-box">
+                    <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation">
+                    </div>
+                </div>
+                <!--logo start-->
+                <a th:href="@{/}" class="logo"><b>ACE<span>MAN</span></b></a>
+                <!--logo end-->
+
+                <div class="top-menu">
+                    <ul class="nav pull-right top-menu">
+                        <li><a class="logout" th:href="@{/login}">Logout</a></li>
+                    </ul>
+                </div>
+            </header>
+            <!--header end-->
+            <!--sidebar  CLEAR-->
+            <aside>
+                <div id="sidebar" class="nav-collapse ">
+                    <!-- sidebar menu start-->
+                    <ul class="sidebar-menu" id="nav-accordion">
+                        <p class="centered"><a th:href="@{/profile}"><img th:src="@{/dist/img/ui-sam.jpg}" class="img-circle" width="80"></a></p>
+                        <h5 class="centered">Sindi</h5>
+                        <li class="mt">
+                            <a class="active" th:href="@{/}">
+                                <i class="fa fa-dashboard"></i>
+                                <span>DASHBOARD</span>
+                            </a>
+                        </li>
+                        
+                        <li class="sub-menu">
+                            <a th:href="@{/admin}">
+                                <i class="fa fa-desktop"></i>
+                                <span>ADMINISTATOR</span>
+                            </a>
+                        </li>
+                        <li class="sub-menu">
+                            <a th:href="@{/manager}">
+                                <i class="fa fa-cogs"></i>
+                                <span>MANAGER</span>
+                            </a> 
+                        </li>
+                        <li class="sub-menu">
+                            <a th:href="@{/employee}">
+                                <i class="fa fa-cogs"></i>
+                                <span>EMPLOYEE</span>
+                            </a>
+                            
+                        </li>
+
+                    </ul>
+                    <!-- sidebar menu end-->
+                </div>
+            </aside>
+            <!--sidebar end-->
+
+            <!--main content start-->
+            <section id="main-content">
+                <!--<section class="wrapper">-->
+                <img th:src="@{/dist/img/asset.jpg}" class="img-responsive">
+                <div class="col-md mb container-fluid">
+                    <h1 style="font-size: 50px"> WELCOME TO <a class="logo-lg" ><b>ACE-MAN</b></a></h1>
+                    <p>Asset management is a systematic process of developing, operating, maintaining, upgrading, and disposing of assets in the most cost-effective manner (including all costs, risks and performance attributes).</p>
+
+                </div>
+                <!--</section>-->
+            </section>
+            <!--main content end-->
+            <!--footer start-->
+            <footer class=" site-footer">
+                <div class="text-center">
+                    <p>
+                        &copy; Copyrights <strong>Bootcamp 26 Java</strong>
+                    </p>
+                    <a th:href="@{/}" class="go-top">
+                        <i class="fa fa-angle-up" ></i>
+                    </a>
+                </div>
+            </footer>
+            <!--footer end-->
+        </section>
+        <!-- js placed at the end of the document so the pages load faster -->
+    </body>
+
+</html>

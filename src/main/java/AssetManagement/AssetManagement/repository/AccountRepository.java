@@ -6,6 +6,7 @@
 package AssetManagement.AssetManagement.repository;
 
 import AssetManagement.AssetManagement.entities.Account;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +16,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface AccountRepository extends CrudRepository<Account, String>{
-    
+    @Query(value = "UPDATE account SET is_delete = 'true' WHERE id =?1", nativeQuery = true)
+    Account accountSoftDelete(String id);
 }
