@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -42,7 +43,8 @@ import org.springframework.format.annotation.DateTimeFormat;
     , @NamedQuery(name = "LoaningRequest.findByReturnDate", query = "SELECT l FROM LoaningRequest l WHERE l.returnDate = :returnDate")
     , @NamedQuery(name = "LoaningRequest.findByLoaningTotal", query = "SELECT l FROM LoaningRequest l WHERE l.loaningTotal = :loaningTotal")
     , @NamedQuery(name = "LoaningRequest.findByNote", query = "SELECT l FROM LoaningRequest l WHERE l.note = :note")
-    , @NamedQuery(name = "LoaningRequest.findByQuantity", query = "SELECT l FROM LoaningRequest l WHERE l.quantity = :quantity")})
+    , @NamedQuery(name = "LoaningRequest.findByQuantity", query = "SELECT l FROM LoaningRequest l WHERE l.quantity = :quantity")
+    , @NamedQuery(name = "LoaningRequest.findByIsDelete", query = "SELECT l FROM LoaningRequest l WHERE l.isDelete = :isDelete")})
 public class LoaningRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -77,6 +79,15 @@ public class LoaningRequest implements Serializable {
     @NotNull
     @Column(name = "quantity")
     private int quantity;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "status_note")
+    private String statusNote;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 5)
+    @Column(name = "is_delete")
+    private String isDelete;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "loaningRequest", fetch = FetchType.LAZY)
     private List<LoaningStatus> loaningStatusList;
     @JoinColumn(name = "employee", referencedColumnName = "id")
@@ -96,13 +107,25 @@ public class LoaningRequest implements Serializable {
         this.id = id;
     }
 
-    public LoaningRequest(String id, Date loaningDate, Date returnDate, int loaningTotal, String note, int quantity) {
+    public LoaningRequest(String id, Date loaningDate, Date returnDate, int loaningTotal, String note, int quantity, String isDelete) {
         this.id = id;
         this.loaningDate = loaningDate;
         this.returnDate = returnDate;
         this.loaningTotal = loaningTotal;
         this.note = note;
         this.quantity = quantity;
+        this.isDelete = isDelete;
+    }
+
+    public LoaningRequest(String id, Date loaningDate, Date returnDate, int loaningTotal, String note, int quantity, String statusNote, String isDelete) {
+        this.id = id;
+        this.loaningDate = loaningDate;
+        this.returnDate = returnDate;
+        this.loaningTotal = loaningTotal;
+        this.note = note;
+        this.quantity = quantity;
+        this.statusNote = statusNote;
+        this.isDelete = isDelete;
     }
 
     public String getId() {
@@ -151,6 +174,22 @@ public class LoaningRequest implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getStatusNote() {
+        return statusNote;
+    }
+
+    public void setStatusNote(String statusNote) {
+        this.statusNote = statusNote;
+    }
+
+    public String getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(String isDelete) {
+        this.isDelete = isDelete;
     }
 
     @XmlTransient

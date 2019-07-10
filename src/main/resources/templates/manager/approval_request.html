@@ -246,7 +246,7 @@
                         <p class="centered"><a th:href="@{/profile}"><img th:src="@{/dist/img/ui-sam.jpg}" class="img-circle" width="80"></a></p>
                         <h5 class="centered">Sindi</h5>
                         <li class="mt">
-                            <a  th:href="@{/manager}">
+                            <a  th:href="@{/deptmanager}">
                                 <i class="fa fa-dashboard"></i>
                                 <span>DASHBOARD</span>
                             </a>
@@ -298,9 +298,9 @@
                                                 <td th:text="${loan.employee.firstName+' '+loan.employee.lastName}"></td>
                                                 <td th:text="${loan.status.name}"></td>
                                                 <td>
-                                                    <button th:action="@{/loaningapproval/(id=${loan.id})}" class="btn btn-success btn btn-sm" data-toggle="modal" data-target="#editModal"><i class="fa fa-hashtag"></i> Details</button>
-                                                    <button  class="btn btn-primary btn btn-sm aBtn" th:href="@{/findLoaning/(id=${loan.id})}"><i class="fa fa-check"></i> Approve</button>
-                                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#softdelete"><i class="fa fa-ban"></i> Reject</button>
+                                                    <button class="btn btn-success btn btn-sm bBtn" th:href="@{/findLoaning/(id=${loan.id})}"><i class="fa fa-hashtag"></i> Details</button>
+                                                    <button class="btn btn-primary btn btn-sm aBtn" th:href="@{/findLoaning/(id=${loan.id})}"><i class="fa fa-check"></i> Approve</button>
+                                                    <button th:href="@{/findLoaning/(id=${loan.id})}" class="btn btn-danger btn-sm rBtn"><i class="fa fa-ban"></i> Reject</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -314,105 +314,287 @@
             </section>
             <!--EMPLOYEE MANAGEMENT end-->
 
-            <!--APPROVE MODAL START-->
+            <!--Detail MODAL-->
             <div class="myForm">
-                <div class="modal fade" id="approveReq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">Approve Request</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row mt">
-                                    <div class="col-lg-12">
-                                        <div class="form-panel">
-                                            <div class="form">
-                                                <form class="form-horizontal" th:action="@{/approveReq/id}" method="post">
-                                                    <div class="form-group">
-                                                        <label for="id" class="control-label col-lg-2">Id</label>
-                                                        <div class="col-lg-10">
-                                                            <input class=" form-control" id="id" name="id" type="text" readonly />
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group required"> 
-                                                        <label for="detailAsset" class="col-form-label col-md-4">Asset</label> 
-                                                        <div class="col-md-8"> 
-                                                            <select name="detailAsset" id="detailAsset" class="form-control" > 
-                                                                <option value="0">-Choose-</option> 
-                                                                <option th:each="data:${detailAsset}" th:value="${data.id}" th:text="${data.asset.name+' - '+data.brand}"></option> 
-                                                            </select> 
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group required">
-                                                        <label for="quantity" class="col-form-label col-md-4">Quantity</label>
-                                                        <div class="col-md-8">
-                                                            <input type="number" class="form-control w-25" id="quantity" name="quantity" placeholder="Quantity">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group required">
-                                                        <label for="loaning" class="col-form-label col-md-4">Loaning Date</label>
-                                                        <div class="col-md-8">
-                                                            <input type="date" data-date-format="yyyy/mm/dd" class="form-control w-25" id="loaningDate" name="loaningDate" placeholder="Loaning Date">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group required">
-                                                        <label for="return" class="col-form-label col-md-4">Return Date</label>
-                                                        <div class="col-md-8">
-                                                            <input type="date" class="form-control" id="returnDate" name="returnDate" placeholder="Return Date" onchange="resultDate()">
-                                                        </div>
-                                                    </div>  
-                                                    <div class="form-group required">
-                                                        <label for="total" class="col-form-label col-md-4">Loaning Day Total</label>
-                                                        <div class="col-md-8">
-                                                            <input type="number" class="form-control" id="loaningTotal" name="loaningTotal" placeholder="Day Total">
-                                                        </div>
-                                                    </div>
-                                                    <script>
-                                                        function resultDate() {
-                                                            var start_date = $('#loaningDate').val();
-                                                            var end_date = $('#returnDate').val();
-                                                            var separate_start_date = start_date.split('-');
-                                                            var separate_end_date = end_date.split('-');
-                                                            var object_date = new Date();
-                                                            var date_start_leave = object_date.setFullYear(separate_start_date[0], separate_start_date[1], separate_start_date[2]);
-                                                            var date_end_leave = object_date.setFullYear(separate_end_date[0], separate_end_date[1], separate_end_date[2]);
-                                                            var result = ((date_end_leave - date_start_leave) / (60 * 60 * 24 * 1000)) + 1;
-                                                            $('#loaningTotal').val(result);
-                                                        }
-                                                    </script>
-                                                    <div class="form-group required">
-                                                        <label for="note" class="col-form-label col-md-4">Note</label>
-                                                        <div class="col-md-8">
-                                                            <input type="text" class="form-control" id="note" name="note" placeholder="Note">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group required"> 
-                                                        <label for="employee" class="col-form-label col-md-4">Employee</label> 
-                                                        <div class="col-md-8"> 
-                                                            <select name="employee" id="employee" class="form-control" > 
-                                                                <option value="0">-Choose-</option> 
-                                                                <option th:each="data:${dataEmp}" th:value="${data.id}" th:text="${data.firstName+' '+data.lastName}"></option> 
-                                                            </select> 
-                                                        </div> 
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                        <button type="submit" class="btn btn-success" id="confirm">Save</button>
-                                                    </div>
-                                                </form>
+                <div class="modal fade" id="detailReq" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Detail Request</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">                       
+                                    <div class="form-panel">
+                                        <form th:action="@{approveReq/id}" method="post" class="form-horizontal">
+                                            <div class="form-group required"> 
+                                                <label for="id" class="col-form-label col-md-4">ID</label> 
+                                                <div class="col-md-8"> 
+                                                    <input class=" form-control" id="id" name="id" type="text" readonly />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <!-- /form-panel -->
+                                            <div class="form-group required"> 
+                                                <label for="detailAsset" class="col-form-label col-md-4">Asset</label> 
+                                                <div class="col-md-8"> 
+                                                    <select name="detailAsset" id="detailAsset" class="form-control" > 
+                                                        <option value="0">-Choose-</option> 
+                                                        <option th:each="data:${detailAsset}" th:value="${data.id}" th:text="${data.asset.name+' - '+data.brand}"></option> 
+                                                    </select> 
+                                                </div>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="quantity" class="col-form-label col-md-4">Quantity</label>
+                                                <div class="col-md-8">
+                                                    <input type="number" class="form-control w-25" id="quantity" name="quantity" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="loaning" class="col-form-label col-md-4">Loaning Date</label>
+                                                <div class="col-md-8">
+                                                    <input type="date" data-date-format="yyyy/mm/dd" class="form-control w-25" id="loaningDate" name="loaningDate" placeholder="Loaning Date">
+                                                </div>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="return" class="col-form-label col-md-4">Return Date</label>
+                                                <div class="col-md-8">
+                                                    <input type="date" class="form-control" id="returnDate" name="returnDate" placeholder="Return Date" onchange="resultDate()">
+                                                </div>
+                                            </div>  
+                                            <div class="form-group required">
+                                                <label for="total" class="col-form-label col-md-4">Loaning Day Total</label>
+                                                <div class="col-md-8">
+                                                    <input type="number" class="form-control" id="loaningTotal" name="loaningTotal" placeholder="Day Total">
+                                                </div>
+                                            </div>
+                                            <script>
+                                                function resultDate() {
+                                                    var start_date = $('#loaningDate').val();
+                                                    var end_date = $('#returnDate').val();
+                                                    var separate_start_date = start_date.split('-');
+                                                    var separate_end_date = end_date.split('-');
+                                                    var object_date = new Date();
+                                                    var date_start_leave = object_date.setFullYear(separate_start_date[0], separate_start_date[1], separate_start_date[2]);
+                                                    var date_end_leave = object_date.setFullYear(separate_end_date[0], separate_end_date[1], separate_end_date[2]);
+                                                    var result = ((date_end_leave - date_start_leave) / (60 * 60 * 24 * 1000)) + 1;
+                                                    $('#loaningTotal').val(result);
+                                                }
+                                            </script>
+                                            <div class="form-group required">
+                                                <label for="note" class="col-form-label col-md-4">Note</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" id="note" name="note" placeholder="Note">
+                                                </div>
+                                            </div>
+                                            <div class="form-group required"> 
+                                                <label for="employee" class="col-form-label col-md-4">Employee</label> 
+                                                <div class="col-md-8"> 
+                                                    <select name="employee" id="employee" class="form-control" > 
+                                                        <option value="0">-Choose-</option> 
+                                                        <option th:each="data:${dataEmp}" th:value="${data.id}" th:text="${data.firstName+' '+data.lastName}"></option> 
+                                                    </select> 
+                                                </div> 
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <!-- /col-lg-12 -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
-            <!--MODAL END-->
+            <!--APPROVE MODAL-->
+            <div class="myForm">
+                <div class="modal fade" id="approveReq" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Approve Request</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">                       
+                                    <div class="form-panel">
+                                        <form th:action="@{approveReq/id}" method="post" class="form-horizontal">
+                                            <div class="form-group required"> 
+                                                <label for="id" class="col-form-label col-md-4">ID</label> 
+                                                <div class="col-md-8"> 
+                                                    <input class=" form-control" id="id" name="id" type="text" readonly />
+                                                </div>
+                                            </div>
+                                            <div class="form-group required"> 
+                                                <label for="detailAsset" class="col-form-label col-md-4">Asset</label> 
+                                                <div class="col-md-8"> 
+                                                    <select name="detailAsset" id="detailAsset" class="form-control" > 
+                                                        <option value="0">-Choose-</option> 
+                                                        <option th:each="data:${detailAsset}" th:value="${data.id}" th:text="${data.asset.name+' - '+data.brand}"></option> 
+                                                    </select> 
+                                                </div>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="quantity" class="col-form-label col-md-4">Quantity</label>
+                                                <div class="col-md-8">
+                                                    <input type="number" class="form-control w-25" id="quantity" name="quantity" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="loaning" class="col-form-label col-md-4">Loaning Date</label>
+                                                <div class="col-md-8">
+                                                    <input type="date" data-date-format="yyyy/mm/dd" class="form-control w-25" id="loaningDate" name="loaningDate" placeholder="Loaning Date">
+                                                </div>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="return" class="col-form-label col-md-4">Return Date</label>
+                                                <div class="col-md-8">
+                                                    <input type="date" class="form-control" id="returnDate" name="returnDate" placeholder="Return Date" onchange="resultDate()">
+                                                </div>
+                                            </div>  
+                                            <div class="form-group required">
+                                                <label for="total" class="col-form-label col-md-4">Loaning Day Total</label>
+                                                <div class="col-md-8">
+                                                    <input type="number" class="form-control" id="loaningTotal" name="loaningTotal" placeholder="Day Total">
+                                                </div>
+                                            </div>
+                                            <script>
+                                                function resultDate() {
+                                                    var start_date = $('#loaningDate').val();
+                                                    var end_date = $('#returnDate').val();
+                                                    var separate_start_date = start_date.split('-');
+                                                    var separate_end_date = end_date.split('-');
+                                                    var object_date = new Date();
+                                                    var date_start_leave = object_date.setFullYear(separate_start_date[0], separate_start_date[1], separate_start_date[2]);
+                                                    var date_end_leave = object_date.setFullYear(separate_end_date[0], separate_end_date[1], separate_end_date[2]);
+                                                    var result = ((date_end_leave - date_start_leave) / (60 * 60 * 24 * 1000)) + 1;
+                                                    $('#loaningTotal').val(result);
+                                                }
+                                            </script>
+                                            <div class="form-group required">
+                                                <label for="note" class="col-form-label col-md-4">Note</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" id="note" name="note" placeholder="Note">
+                                                </div>
+                                            </div>
+                                            <div class="form-group required"> 
+                                                <label for="employee" class="col-form-label col-md-4">Employee</label> 
+                                                <div class="col-md-8"> 
+                                                    <select name="employee" id="employee" class="form-control" > 
+                                                        <option value="0">-Choose-</option> 
+                                                        <option th:each="data:${dataEmp}" th:value="${data.id}" th:text="${data.firstName+' '+data.lastName}"></option> 
+                                                    </select> 
+                                                </div> 
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-success" id="confirm">Approve</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <!--REJECT MODAL-->
+            <div class="myForm">
+                <div class="modal fade" id="rejectReq" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Reject Request</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">                       
+                                    <div class="form-panel">
+                                        <form th:action="@{rejectReq/id}" method="post" class="form-horizontal">
+                                            <div class="hidden">
+                                            <div class="form-group required"> 
+                                                <label for="id" class="col-form-label col-md-4">ID</label> 
+                                                <div class="col-md-8"> 
+                                                    <input class=" form-control" id="id" name="id" type="text" readonly />
+                                                </div>
+                                            </div>
+                                            <div class="form-group required"> 
+                                                <label for="detailAsset" class="col-form-label col-md-4">Asset</label> 
+                                                <div class="col-md-8"> 
+                                                    <select name="detailAsset" id="detailAsset" class="form-control" > 
+                                                        <option value="0">-Choose-</option> 
+                                                        <option th:each="data:${detailAsset}" th:value="${data.id}" th:text="${data.asset.name+' - '+data.brand}"></option> 
+                                                    </select> 
+                                                </div>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="quantity" class="col-form-label col-md-4">Quantity</label>
+                                                <div class="col-md-8">
+                                                    <input type="number" class="form-control w-25" id="quantity" name="quantity" placeholder="Quantity">
+                                                </div>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="loaning" class="col-form-label col-md-4">Loaning Date</label>
+                                                <div class="col-md-8">
+                                                    <input type="date" data-date-format="yyyy/mm/dd" class="form-control w-25" id="loaningDate" name="loaningDate" placeholder="Loaning Date">
+                                                </div>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="return" class="col-form-label col-md-4">Return Date</label>
+                                                <div class="col-md-8">
+                                                    <input type="date" class="form-control" id="returnDate" name="returnDate" placeholder="Return Date" onchange="resultDate()">
+                                                </div>
+                                            </div>  
+                                            <div class="form-group required">
+                                                <label for="total" class="col-form-label col-md-4">Loaning Day Total</label>
+                                                <div class="col-md-8">
+                                                    <input type="number" class="form-control" id="loaningTotal" name="loaningTotal" placeholder="Day Total">
+                                                </div>
+                                            </div>
+                                            <script>
+                                                function resultDate() {
+                                                    var start_date = $('#loaningDate').val();
+                                                    var end_date = $('#returnDate').val();
+                                                    var separate_start_date = start_date.split('-');
+                                                    var separate_end_date = end_date.split('-');
+                                                    var object_date = new Date();
+                                                    var date_start_leave = object_date.setFullYear(separate_start_date[0], separate_start_date[1], separate_start_date[2]);
+                                                    var date_end_leave = object_date.setFullYear(separate_end_date[0], separate_end_date[1], separate_end_date[2]);
+                                                    var result = ((date_end_leave - date_start_leave) / (60 * 60 * 24 * 1000)) + 1;
+                                                    $('#loaningTotal').val(result);
+                                                }
+                                            </script>
+                                            <div class="form-group required">
+                                                <label for="note" class="col-form-label col-md-4">Note</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" id="note" name="note" placeholder="Note">
+                                                </div>
+                                            </div>
+                                            <div class="form-group required"> 
+                                                <label for="employee" class="col-form-label col-md-4">Employee</label> 
+                                                <div class="col-md-8"> 
+                                                    <select name="employee" id="employee" class="form-control" > 
+                                                        <option value="0">-Choose-</option> 
+                                                        <option th:each="data:${dataEmp}" th:value="${data.id}" th:text="${data.firstName+' '+data.lastName}"></option> 
+                                                    </select> 
+                                                </div> 
+                                            </div>
+                                            </div>
+                                            <div class="form-group required centered">
+                                                <label for="statusNote" class="col-form-label text-center" style="font-size: 30px">Why do you Reject this request?</label>
+                                                <br/><br/>
+                                                <div class="col-md-12">
+                                                    <input type="text" class="form-control required" id="statusNote" name="statusNote" placeholder="Note">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-danger" id="confirm">Reject</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
 
 
         </section>
@@ -464,6 +646,8 @@
                             $('.myForm #loaningTotal').val(loan.loaningTotal);
                             $('.myForm #note').val(loan.note);
                             $('.myForm #quantity').val(loan.quantity);
+                            $('.myForm #detailAsset').val(loan.statusNote);
+                            $('.myForm #employee').val(loan.isDelete);
 //                            $('.myForm #firstName').val(employee.firstName);
 //                            $('.myForm #lastName').val(employee.lastName);
 //                            $('.myForm #email').val(employee.email);
@@ -472,6 +656,56 @@
 //                            $('.myForm #manager').val(employee.isDelete);
                         });
                         $('.myForm #approveReq').modal();
+                    });
+                });
+            </script>
+            <script>
+                $(document).ready(function () {
+                    $('.table .bBtn').on('click', function (event) {
+                        event.preventDefault();
+                        var href = $(this).attr('href');
+                        $.get(href, function (loan, status) {
+                            $('.myForm #id').val(loan.id);
+                            $('.myForm #loaningDate').val(loan.loaningDate);
+                            $('.myForm #returnDate').val(loan.returnDate);
+                            $('.myForm #loaningTotal').val(loan.loaningTotal);
+                            $('.myForm #note').val(loan.note);
+                            $('.myForm #quantity').val(loan.quantity);
+                            $('.myForm #detailAsset').val(loan.statusNote);
+                            $('.myForm #employee').val(loan.isDelete);
+//                            $('.myForm #firstName').val(employee.firstName);
+//                            $('.myForm #lastName').val(employee.lastName);
+//                            $('.myForm #email').val(employee.email);
+//                            $('.myForm #phoneNumber').val(employee.phoneNumber);
+//                            $('.myForm #salary').val(employee.salary);
+//                            $('.myForm #manager').val(employee.isDelete);
+                        });
+                        $('.myForm #detailReq').modal();
+                    });
+                });
+            </script>
+            <script>
+                $(document).ready(function () {
+                    $('.table .rBtn').on('click', function (event) {
+                        event.preventDefault();
+                        var href = $(this).attr('href');
+                        $.get(href, function (loan, status) {
+                            $('.myForm #id').val(loan.id);
+                            $('.myForm #loaningDate').val(loan.loaningDate);
+                            $('.myForm #returnDate').val(loan.returnDate);
+                            $('.myForm #loaningTotal').val(loan.loaningTotal);
+                            $('.myForm #note').val(loan.note);
+                            $('.myForm #quantity').val(loan.quantity);
+                            $('.myForm #detailAsset').val(loan.statusNote);
+                            $('.myForm #employee').val(loan.isDelete);
+//                            $('.myForm #firstName').val(employee.firstName);
+//                            $('.myForm #lastName').val(employee.lastName);
+//                            $('.myForm #email').val(employee.email);
+//                            $('.myForm #phoneNumber').val(employee.phoneNumber);
+//                            $('.myForm #salary').val(employee.salary);
+//                            $('.myForm #manager').val(employee.isDelete);
+                        });
+                        $('.myForm #rejectReq').modal();
                     });
                 });
             </script>

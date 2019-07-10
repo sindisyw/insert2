@@ -19,4 +19,6 @@ import org.springframework.stereotype.Repository;
 public interface LoanRepository extends CrudRepository<LoaningRequest, String>{
     @Query(value = "SELECT * FROM loaning_request  WHERE id =?1", nativeQuery = true)
     LoaningRequest getLoanById(String id);
+    @Query(value = "SELECT COUNT(*) FROM loaning_request  WHERE status='ST1'", nativeQuery = true)
+    LoaningRequest count(String id);
 }

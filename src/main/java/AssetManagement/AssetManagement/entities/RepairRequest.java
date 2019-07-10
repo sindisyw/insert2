@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -35,7 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "RepairRequest.findAll", query = "SELECT r FROM RepairRequest r")
     , @NamedQuery(name = "RepairRequest.findById", query = "SELECT r FROM RepairRequest r WHERE r.id = :id")
     , @NamedQuery(name = "RepairRequest.findByNote", query = "SELECT r FROM RepairRequest r WHERE r.note = :note")
-    , @NamedQuery(name = "RepairRequest.findByQuantity", query = "SELECT r FROM RepairRequest r WHERE r.quantity = :quantity")})
+    , @NamedQuery(name = "RepairRequest.findByQuantity", query = "SELECT r FROM RepairRequest r WHERE r.quantity = :quantity")
+    , @NamedQuery(name = "RepairRequest.findByIsDelete", query = "SELECT r FROM RepairRequest r WHERE r.isDelete = :isDelete")})
 public class RepairRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,6 +56,15 @@ public class RepairRequest implements Serializable {
     @NotNull
     @Column(name = "quantity")
     private int quantity;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "status_note")
+    private String statusNote;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 5)
+    @Column(name = "is_delete")
+    private String isDelete;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "repairRequest", fetch = FetchType.LAZY)
     private List<RepairStatus> repairStatusList;
     @JoinColumn(name = "employee", referencedColumnName = "id")
@@ -73,11 +84,22 @@ public class RepairRequest implements Serializable {
         this.id = id;
     }
 
-    public RepairRequest(String id, String note, int quantity) {
+    public RepairRequest(String id, String note, int quantity, String isDelete) {
         this.id = id;
         this.note = note;
         this.quantity = quantity;
+        this.isDelete = isDelete;
     }
+
+    public RepairRequest(String id, String note, int quantity, String statusNote, String isDelete) {
+        this.id = id;
+        this.note = note;
+        this.quantity = quantity;
+        this.statusNote = statusNote;
+        this.isDelete = isDelete;
+    }
+    
+    
 
     public String getId() {
         return id;
@@ -101,6 +123,22 @@ public class RepairRequest implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getStatusNote() {
+        return statusNote;
+    }
+
+    public void setStatusNote(String statusNote) {
+        this.statusNote = statusNote;
+    }
+
+    public String getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(String isDelete) {
+        this.isDelete = isDelete;
     }
 
     @XmlTransient

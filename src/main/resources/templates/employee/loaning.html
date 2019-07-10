@@ -28,7 +28,6 @@
         <link href="dist/lib/advanced-datatable/css/demo_table.css" rel="stylesheet" />
         <link rel="stylesheet" href="dist/lib/advanced-datatable/css/DT_bootstrap.css" />
     </head>
-
     <body>
         <header class="header black-bg" id="header">
             <div class="sidebar-toggle-box">
@@ -224,7 +223,7 @@
             </div>
             <div class="top-menu">
                 <ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="login.html">Logout</a></li>
+                    <li><a class="logout" th:href="@{/login}">Logout</a></li>
                 </ul>
             </div>
         </header>
@@ -262,7 +261,6 @@
                 <section class="wrapper">
                     <div class="row">
                         <div class="col-lg-9 main-chart">
-                            <!--CUSTOM CHART START -->
                             <div class="border-head">
                                 <h3>ASSET</h3>
                             </div>
@@ -270,6 +268,7 @@
                                 NEW REQUEST
                             </button>
                             <br><br>
+                            <!--TABLE ASSET-->
                             <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="hidden-table-info">
                                 <thead>
                                     <tr>
@@ -291,27 +290,28 @@
                     </div>                    
                     <h3><i class="fa fa-angle-right"></i>   LOANING REQUEST </h3>
                     <div class="row mb">
-                        <div class="col-md-9">
+                        <div class="col-md-12">
                             <!-- page start-->
                             <div class="panel">
                                 <br>
-                                <div class="adv-table">
+                                <div class="table adv-table">
                                     <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="hidden-table-info">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
+                                                <th>REQUESTER</th>
                                                 <th>STATUS</th>
                                                 <th>ACTION</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr th:each="loan:${dataLoaning}" >
+                                            <tr th:each="loan:${dataLoaning}" th:switch="${loan.status.name}" th:case="'Pending'" >
                                                 <td th:text="${loan.id}"></td>
+                                                <td th:text="${loan.employee.firstName+' '+loan.employee.lastName}"></td>
                                                 <td th:text="${loan.status.name}"></td>
-                                                <td style="width: 200px">
-
-                                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#detail"><i class="fa fa-bars"></i> Detail</button>
-                                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#softdelete"><i class="fa fa-ban"></i> Cancel</button>
+                                                <td>
+                                                    <button  class="btn btn-primary btn-sm aBtn" th:href="@{/findLoaning/(id=${loan.id})}"><i class="fa fa-check"></i> Detail</button>
+                                                    <button th:href="@{/findLoaning/(id=${loan.id})}" class="btn btn-danger btn-sm rBtn"><i class="fa fa-ban"></i> Cancel</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -331,7 +331,7 @@
                                 </div>
                                 <div class="modal-body">                       
                                     <div class="form-panel">
-                                        <form th:action="@{loaningController/addData}" method="post" class="form-horizontal">
+                                        <form th:action="@{loaningReq/addData}" method="post" class="form-horizontal">
                                             <div class="form-group required"> 
                                                 <label for="detailAsset" class="col-form-label col-md-4">Asset</label> 
                                                 <div class="col-md-8"> 
@@ -350,7 +350,7 @@
                                             <div class="form-group required">
                                                 <label for="loaning" class="col-form-label col-md-4">Loaning Date</label>
                                                 <div class="col-md-8">
-                                                    <input type="date" data-date-format="yyyy/mm/dd" class="form-control w-25" id="loaningDate" name="loaningDate" placeholder="Loaning Date">
+                                                    <input type="date" data-date-format="yyyy/mm/dd"  class="form-control w-25" id="loaningDate" name="loaningDate" placeholder="Loaning Date">
                                                 </div>
                                             </div>
                                             <div class="form-group required">
@@ -403,59 +403,96 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /col-lg-3 -->
-                    <!-- /row -->
-                    <!-- Modal Update Dialog -->
-                    <div class="update-form">
-                        <div class="modal fade" id="detail" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">Update Asset</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">                       
-                                        <div class="form-panel">
-                                            <form th:action="@{/update}" th:object="${editappel}" method="post" class="form-horizontal">
-                                                <div class="form-group required">
-                                                    <label for="firstname" class="col-form-label col-md-4">ID Asset</label>
-                                                    <div class="col-md-8">
-                                                        <input type="text" class="form-control" id="id" name="id" placeholder="ID Asset" disabled>
-                                                    </div>
+                    <!--MOdal Detail-->
+                    <div class="modal fade" id="detailReq" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Add Loaning Request</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">                       
+                                    <div class="form-panel">
+                                        <form th:action="@{loaningReq/addData}" method="post" class="form-horizontal">
+                                            <div class="form-group required"> 
+                                                <label for="id" class="col-form-label col-md-4">ID</label> 
+                                                <div class="col-md-8">
+                                                    <input type="number" class="form-control w-25" id="id" name="id" placeholder="ID">
                                                 </div>
-                                                <div class="form-group required">
-                                                    <label for="lastname" class="col-form-label col-md-4">Name Asset</label>
-                                                    <div class="col-md-8">
-                                                        <input type="text" class="form-control" id="name" name="name" placeholder="Name Asset">
-                                                    </div>
+                                            </div>
+                                            <div class="form-group required"> 
+                                                <label for="detailAsset" class="col-form-label col-md-4">Asset</label> 
+                                                <div class="col-md-8"> 
+                                                    <select name="detailAsset" id="detailAsset" class="form-control" > 
+                                                        <option value="0">-Choose-</option> 
+                                                        <option th:each="data:${detailAsset}" th:value="${data.id}" th:text="${data.asset.name+' - '+data.brand}"></option> 
+                                                    </select> 
                                                 </div>
-                                                <div class="form-group required">
-                                                    <label for="email" class="col-form-label col-md-4">Quantity</label>
-                                                    <div class="col-md-8">
-                                                        <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity">
-                                                    </div>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="quantity" class="col-form-label col-md-4">Quantity</label>
+                                                <div class="col-md-8">
+                                                    <input type="number" class="form-control w-25" id="quantity" name="quantity" placeholder="Quantity">
                                                 </div>
-                                                <div class="form-group required"> 
-                                                    <label for="category" class="col-form-label col-md-4">Category</label> 
-                                                    <div class="col-md-10"> 
-                                                        <select name="category" id="category" class="form-control" > 
-                                                            <option value="0">-PILIH-</option> 
-                                                            <option th:each="data:${dataCategory}" th:value="${data.id}" th:text="${data.name}"></option> 
-                                                        </select> 
-                                                    </div> 
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="loaning" class="col-form-label col-md-4">Loaning Date</label>
+                                                <div class="col-md-8">
+                                                    <input type="date" data-date-format="yyyy/mm/dd"  class="form-control w-25" id="loaningDate" name="loaningDate" placeholder="Loaning Date">
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                    <button type="submit" class="btn btn-success" id="confirm">Save</button>
+                                            </div>
+                                            <div class="form-group required">
+                                                <label for="return" class="col-form-label col-md-4">Return Date</label>
+                                                <div class="col-md-8">
+                                                    <input type="date" class="form-control" id="returnDate" name="returnDate" placeholder="Return Date" onchange="resultDate()">
                                                 </div>
-                                            </form>
-                                        </div>
+                                            </div>  
+                                            <div class="form-group required">
+                                                <label for="total" class="col-form-label col-md-4">Loaning Day Total</label>
+                                                <div class="col-md-8">
+                                                    <input type="number" class="form-control" id="loaningTotal" name="loaningTotal" placeholder="Day Total">
+                                                </div>
+                                            </div>
+                                            <script>
+                                                function resultDate() {
+                                                    var start_date = $('#loaningDate').val();
+                                                    var end_date = $('#returnDate').val();
+                                                    var separate_start_date = start_date.split('-');
+                                                    var separate_end_date = end_date.split('-');
+                                                    var object_date = new Date();
+                                                    var date_start_leave = object_date.setFullYear(separate_start_date[0], separate_start_date[1], separate_start_date[2]);
+                                                    var date_end_leave = object_date.setFullYear(separate_end_date[0], separate_end_date[1], separate_end_date[2]);
+                                                    var result = ((date_end_leave - date_start_leave) / (60 * 60 * 24 * 1000)) + 1;
+                                                    $('#loaningTotal').val(result);
+                                                }
+                                            </script>
+                                            <div class="form-group required">
+                                                <label for="note" class="col-form-label col-md-4">Note</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" id="note" name="note" placeholder="Note">
+                                                </div>
+                                            </div>
+                                            <div class="form-group required"> 
+                                                <label for="employee" class="col-form-label col-md-4">Employee</label> 
+                                                <div class="col-md-8"> 
+                                                    <select name="employee" id="employee" class="form-control" > 
+                                                        <option value="0">-Choose-</option> 
+                                                        <option th:each="data:${dataEmp}" th:value="${data.id}" th:text="${data.firstName+' '+data.lastName}"></option> 
+                                                    </select> 
+                                                </div> 
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-success" id="confirm">Save</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </section>
             </section>
 
@@ -473,26 +510,7 @@
         <script type="text/javascript" src="dist/lib/gritter/js/jquery.gritter.js"></script>
         <script type="text/javascript" src="dist/lib/gritter-conf.js"></script>
 
-        <script type="text/javascript">
-                                                $(document).ready(function () {
-                                                    var unique_id = $.gritter.add({
-                                                        // (string | mandatory) the heading of the notification
-                                                        title: 'Welcome to Dashio!',
-                                                        // (string | mandatory) the text inside the notification
-                                                        text: 'Hover me to enable the Close Button. You can hide the left sidebar clicking on the button next to the logo.',
-                                                        // (string | optional) the image to display on the left
-                                                        image: 'dist/img/ui-sam.jpg',
-                                                        // (bool | optional) if you want it to fade out on its own or just sit there
-                                                        sticky: false,
-                                                        // (int | optional) the time you want it to be alive for before fading out
-                                                        time: 8000,
-                                                        // (string | optional) the class name you want to apply to that specific message
-                                                        class_name: 'my-sticky-class'
-                                                    });
 
-                                                    return false;
-                                                });
-        </script>
         <script type="application/javascript">
             $(document).ready(function() {
             $("#date-popover").popover({
@@ -537,35 +555,60 @@
         </script>
         <!--script for this page-->
         <script type="text/javascript">
-            $(document).ready(function () {
-                var oTable = $('#hidden-table-info').dataTable({
-                    "pagingType": "full_numbers",
-                    "dom": '<"top"if>rt<"bottom"lp>',
-                    "pageLength": 5
-                });
-            });
+                                                    $(document).ready(function () {
+                                                        var oTable = $('#hidden-table-info').dataTable({
+                                                            "pagingType": "full_numbers",
+                                                            "dom": '<"top"if>rt<"bottom"lp>',
+                                                            "pageLength": 5
+                                                        });
+                                                    });
         </script>
+        <!--        <script>
+                    $(document).ready(function () {
+                        $("#update").on('show.bs.modal', function (e) {
+                            var _button = $(e.relatedTarget);
+                            var _row = _button.parents("tr");
+        
+                            var _assetId = _row.find("#asset_id").text();
+                            var _assetName = _row.find("#asset_name").text();
+                            var _assetQuantity = _row.find("#asset_quantity").text();
+                            var _assetCategory = _row.find("#asset_category").text();
+        
+                            $(this).find("#asset_id").val(_assetId);
+                            $(this).find("#asset_name").val(_assetName);
+                            $(this).find("#asset_quantity").val(_assetQuantity);
+                            $(this).find("#asset_category").val(_assetCategory);
+        
+        //                    alert($(this).find("#actor_Id").text());
+        //                    alert($(this).find("#first_Name").text());
+        
+                        })
+                    })
+                </script>-->
         <script>
             $(document).ready(function () {
-                $("#update").on('show.bs.modal', function (e) {
-                    var _button = $(e.relatedTarget);
-                    var _row = _button.parents("tr");
-
-                    var _assetId = _row.find("#asset_id").text();
-                    var _assetName = _row.find("#asset_name").text();
-                    var _assetQuantity = _row.find("#asset_quantity").text();
-                    var _assetCategory = _row.find("#asset_category").text();
-
-                    $(this).find("#asset_id").val(_assetId);
-                    $(this).find("#asset_name").val(_assetName);
-                    $(this).find("#asset_quantity").val(_assetQuantity);
-                    $(this).find("#asset_category").val(_assetCategory);
-
-//                    alert($(this).find("#actor_Id").text());
-//                    alert($(this).find("#first_Name").text());
-
-                })
-            })
+                $('.table .aBtn').on('click', function (event) {
+                    event.preventDefault();
+                    var href = $(this).attr('href');
+                    $.get(href, function (loan, status) {
+                        $('.myForm #id').val(loan.id);
+                        $('.myForm #loaningDate').val(loan.loaningDate);
+                        $('.myForm #returnDate').val(loan.returnDate);
+                        $('.myForm #loaningTotal').val(loan.loaningTotal);
+                        $('.myForm #note').val(loan.note);
+                        $('.myForm #quantity').val(loan.quantity);
+                        $('.myForm #detailAsset').val(loan.statusNote);
+                        $('.myForm #employee').val(loan.isDelete);
+//                            $('.myForm #firstName').val(employee.firstName);
+//                            $('.myForm #lastName').val(employee.lastName);
+//                            $('.myForm #email').val(employee.email);
+//                            $('.myForm #phoneNumber').val(employee.phoneNumber);
+//                            $('.myForm #salary').val(employee.salary);
+//                            $('.myForm #manager').val(employee.isDelete);
+                    });
+                    $('.myForm #detailReq').modal();
+                });
+            });
         </script>
     </body>
 

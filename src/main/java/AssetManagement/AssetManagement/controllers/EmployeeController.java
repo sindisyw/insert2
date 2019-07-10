@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -72,9 +73,10 @@ public class EmployeeController {
         return "employee/loaning";
     }
 
-    @PostMapping("/loaningrequest/addData")
+    @PostMapping("/loaningReq/addData")
     public String addLoan(LoaningRequest loan) {
         loan.setId("0");
+        loan.setIsDelete("false");
         Status status = new Status();
         status.setId("ST1");
         loan.setStatus(status);

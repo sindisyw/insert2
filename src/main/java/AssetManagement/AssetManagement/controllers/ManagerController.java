@@ -66,6 +66,7 @@ public class ManagerController {
 
     @GetMapping("/deptmanager")
     public String manager(Model model) {
+        model.addAttribute("count", loanRepository.count());
         return "dashboard/manager";
     }
 
@@ -99,13 +100,24 @@ public class ManagerController {
         return "redirect:/employee/all";
     }
 
-    @PostMapping("/addrepairrequest")
+    @PostMapping("/addRepairRequest")
     public String addData(RepairRequest repair) {
         repair.setId("0");
+        repair.setIsDelete("false");
         Status status = new Status();
+        status.setId("ST1");
         repair.setStatus(status);
         repairRepository.save(repair);
-        return "redirect:/manager-repair";
+        return "redirect:/manager_repair";
+    }
+    @PostMapping("/cancelRequest/id")
+    public String cancelReq(RepairRequest repair) {
+        repair.setIsDelete("false");
+        Status status = new Status();
+        status.setId("ST4");
+        repair.setStatus(status);
+        repairRepository.save(repair);
+        return "redirect:/manager_repair";
     }
 
     @GetMapping("/findLoaning")
@@ -118,8 +130,42 @@ public class ManagerController {
                 req.getReturnDate(),
                 req.getLoaningTotal(),
                 req.getNote(),
-                req.getQuantity());
+                req.getQuantity(),
+                req.getDetailAsset().getId(),
+                req.getEmployee().getId()
+        );
         return req;
     }
+    
+    @PostMapping("/approveReq/id")
+    public String approveReq(LoaningRequest loaningRequest) {
+        loaningRequest.setIsDelete("false");
+        Status status = new Status();
+        status.setId("ST2");
+        loaningRequest.setStatus(status);
+        loanRepository.save(loaningRequest);
+        return "redirect:/manager_approval-request";
+    }
+    @PostMapping("/rejectReq/id")
+    public String rejectReq(LoaningRequest loaningRequest) {
+        loaningRequest.setIsDelete("false");
+        Status status = new Status();
+        status.setId("ST3");
+        loaningRequest.setStatus(status);
+        loanRepository.save(loaningRequest);
+        return "redirect:/manager_approval-request";
+    }
 
+    @GetMapping("/findRepair")
+    @ResponseBody
+    public RepairRequest repairReq(String id) {
+        RepairRequest rep= repairRepository.getRepairById(id);
+        rep = new RepairRequest(
+                rep.getId(),
+                rep.getNote(),
+                rep.getQuantity(),
+                rep.getDetailAsset().getId(),
+                rep.getEmployee().getId());
+        return rep;
+    }
 }

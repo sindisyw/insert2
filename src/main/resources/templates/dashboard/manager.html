@@ -52,7 +52,7 @@
                         <p class="centered"><a th:href="@{/profile}"><img th:src="@{/dist/img/ui-sam.jpg}" class="img-circle" width="80"></a></p>
                         <h5 class="centered">Sindi</h5>
                         <li class="mt">
-                            <a class="active" th:href="@{/manager}">
+                            <a class="active" th:href="@{/deptmanager}">
                                 <i class="fa fa-dashboard"></i>
                                 <span>DASHBOARD</span>
                             </a>
@@ -88,7 +88,23 @@
                     <h1 style="font-size: 50px"> WELCOME TO <a class="logo-lg" ><b>ACE-MAN</b></a></h1>
                     <h3> This is your Manager Dashboard </h3>
                     <p>Asset management is a systematic process of developing, operating, maintaining, upgrading, and disposing of assets in the most cost-effective manner (including all costs, risks and performance attributes).</p>
+                    <div class="row">
+                        <!-- WEATHER PANEL -->
+                        <a th:href="@{/manager_approval-request}">
+                            <div class="col-md-4 mb" >
 
+                                <div class="weather pn">
+
+                                    <i class="fa fa-bullhorn"></i>
+                                    <h2 style="font-size: 50px" class="text-center" th:text="${count}"></h2>
+                                    <h4 class="text-center">APPROVAL WAITING LIST</h4>
+                                    <p style="color: white" class="text-center">CLICK HERE OR GO TO THE APPROVAL REQUEST</p>
+
+                                </div>
+                            </div>
+                        </a>
+
+                    </div>
                 </div>
                 <!--</section>-->
             </section>

@@ -397,7 +397,7 @@
                                             <div class="form-group">
                                                 <label for="salary" class="col-sm-3  control-label">Salary</label>
                                                 <div class="col-sm-9">
-                                                    <input id="salary" name="salary" type="currency" class="form-control" placeholder="input salary">
+                                                    <input id="salary" name="salary" min="0" type="number" class="form-control" placeholder="input salary">
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -590,7 +590,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">Edit Employee</h4>
+                            <h4 class="modal-title" id="myModalLabel">Delete Employee</h4>
                         </div>
                         <div class="modal-body">
                             <div class="row mt">
@@ -598,6 +598,7 @@
                                     <div class="form-panel">
                                         <div class="form">
                                             <form class="form-horizontal" th:action="@{/deleteEmp/id}" method="post">
+                                                <div class="hidden">
                                                 <div class="form-group">
                                                     <label for="id" class="control-label col-lg-2">Id</label>
                                                     <div class="col-lg-10">
@@ -643,10 +644,12 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                </div>
+                                                <h3 class="centered">Are you sure to delete this data?</h3>
                                                 <div class="form-group">
-                                                    <div class="col-lg-offset-2 col-lg-10">
-                                                        <button class="btn btn-theme" type="submit">Save</button>
-                                                        <button class="btn btn-theme04" type="button" data-dismiss="modal">Cancel</button>
+                                                    <div class="col-lg-offset-2 col-lg-10 centered">
+                                                        <button class="btn btn-theme " type="submit">Delete</button>
+                                                        <button class="btn btn-danger " type="button" data-dismiss="modal">Cancel</button>
                                                     </div>
                                                 </div>
                                             </form>

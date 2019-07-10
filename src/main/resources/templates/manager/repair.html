@@ -273,7 +273,7 @@
                 </div>
             </aside>
             <!--sidebar end-->
-            
+
             <!--EMPLOYEE MANAGEMENT start-->          
             <section id="main-content">
                 <section class="wrapper">
@@ -283,9 +283,9 @@
                             <!-- page start-->
                             <div class="panel">
                                 <button class="btn btn-lg mb" style="color: white; background-color: #4ECDC4" data-toggle="modal" data-target="#addRepair"><i class="fa fa-plus"></i> NEW REQUEST</button>
-                                
+
                                 <br>
-                                <div class="adv-table">
+                                <div class="table adv-table">
                                     <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="hidden-table-info2">
                                         <thead>
                                             <tr>
@@ -298,10 +298,11 @@
                                             <tr th:each="rpr:${dataRepair}"  th:switch="${rpr.status.name}" th:case="'Pending'">
                                                 <td th:text="${rpr.id}"></td>
                                                 <td th:text="${rpr.status.name}"></td>
-                                                
+
                                                 <td>
-                                                    <button class="btn btn-success btn btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-hashtag"></i> Details</button>
-                                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#softdelete"><i class="fa fa-ban"></i> Cancel</button>
+                                                    <button class="btn btn-success btn-xs bBtn" th:href="@{/findRepair/(id=${rpr.id})}"><i class="fa fa-hashtag"></i> Details</button>
+
+                                                    <button class="btn btn-danger btn-xs cBtn" th:href="@{/findRepair/(id=${rpr.id})}"><i class="fa fa-ban"></i> Cancel</button>
                                                 </td>
                                             </tr>
 
@@ -315,16 +316,137 @@
             </section>
             <!--MODAL ADD REPAIR REQUEST-->
             <div class="modal fade" id="addRepair" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Add Repair Request</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span>
-                                    </button>
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Add Repair Request</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">                       
+                            <div class="form-panel">
+                                <form th:action="@{/addRepairRequest}" method="post" class="form-horizontal">
+                                    <div class="form-group required"> 
+                                        <label for="asset" class="col-form-label col-md-4">Asset</label> 
+                                        <div class="col-md-8"> 
+                                            <select name="detailAsset" id="detailAsset" class="form-control" > 
+                                                <option value="0">-Choose-</option> 
+                                                <option th:each="data:${detailAsset}" th:value="${data.id}" th:text="${data.asset.name}+' - '+${data.brand}"></option> 
+                                            </select> 
+                                        </div> 
+                                    </div>
+                                    <div class="form-group required">
+                                        <label for="quantity" class="col-form-label col-md-4">Quantity</label>
+                                        <div class="col-md-8">
+                                            <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Quantity">
+                                        </div>
+                                    </div>
+                                    <div class="form-group required">
+                                        <label for="note" class="col-form-label col-md-4">Notes</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" id="note" name="note" placeholder="Notes">
+                                        </div>
+                                    </div>
+                                    <div class="form-group required"> 
+                                        <label for="employee" class="col-form-label col-md-4">Employee</label> 
+                                        <div class="col-md-8"> 
+                                            <select name="employee" id="employee" class="form-control" > 
+                                                <option value="0">-Choose-</option> 
+                                                <option th:each="data:${dataEmp}" th:value="${data.id}" th:text="${data.id}"></option> 
+                                            </select> 
+                                        </div> 
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success" id="confirm">Save</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+            <!--MODAL DETAIL REPAIR REQUEST-->
+            <div class="myForm">
+                <div class="modal fade" id="detailRepair" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Detail Repair Request</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">                       
+                                <div class="form-panel">
+                                    <form th:action="@{/addRepairRequest}" method="post" class="form-horizontal">
+                                        <div class="form-group required"> 
+                                            <label for="id" class="col-form-label col-md-4">ID</label> 
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="id" name="id" placeholder="id" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required"> 
+                                            <label for="asset" class="col-form-label col-md-4">Asset</label> 
+                                            <div class="col-md-8"> 
+                                                <select name="detailAsset" id="detailAsset" class="form-control" > 
+                                                    <option value="0">-Choose-</option> 
+                                                    <option th:each="data:${detailAsset}" th:value="${data.id}" th:text="${data.asset.name}+' - '+${data.brand}"></option> 
+                                                </select> 
+                                            </div> 
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="quantity" class="col-form-label col-md-4">Quantity</label>
+                                            <div class="col-md-8">
+                                                <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Quantity">
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <label for="note" class="col-form-label col-md-4">Notes</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="note" name="note" placeholder="Notes">
+                                            </div>
+                                        </div>
+                                        <div class="form-group required"> 
+                                            <label for="employee" class="col-form-label col-md-4">Employee</label> 
+                                            <div class="col-md-8"> 
+                                                <select name="employee" id="employee" class="form-control" > 
+                                                    <option value="0">-Choose-</option> 
+                                                    <option th:each="data:${dataEmp}" th:value="${data.id}" th:text="${data.firstName+' '+data.lastName}"></option> 
+                                                </select> 
+                                            </div> 
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="modal-body">                       
-                                    <div class="form-panel">
-                                        <form th:action="@{/addrepairrequest}" method="post" class="form-horizontal">
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <!--MODAL CANCEL REQUEST-->
+            <div class="myForm">
+                <div class="modal fade" id="cancelRepair" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Cancel Repair Request</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">                       
+                                <div class="form-panel">
+                                    <form th:action="@{/cancelRequest/id}" method="post" class="form-horizontal">
+                                        <div class="hidden">
+                                            <div class="form-group required"> 
+                                                <label for="id" class="col-form-label col-md-4">ID</label> 
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" id="id" name="id" placeholder="id" readonly>
+                                                </div>
+                                            </div>
                                             <div class="form-group required"> 
                                                 <label for="asset" class="col-form-label col-md-4">Asset</label> 
                                                 <div class="col-md-8"> 
@@ -341,9 +463,9 @@
                                                 </div>
                                             </div>
                                             <div class="form-group required">
-                                                <label for="notes" class="col-form-label col-md-4">Notes</label>
+                                                <label for="note" class="col-form-label col-md-4">Notes</label>
                                                 <div class="col-md-8">
-                                                    <input type="text" class="form-control" id="note" name="notes" placeholder="Notes">
+                                                    <input type="text" class="form-control" id="note" name="note" placeholder="Notes">
                                                 </div>
                                             </div>
                                             <div class="form-group required"> 
@@ -351,23 +473,24 @@
                                                 <div class="col-md-8"> 
                                                     <select name="employee" id="employee" class="form-control" > 
                                                         <option value="0">-Choose-</option> 
-                                                        <option th:each="data:${dataEmp}" th:value="${data.id}" th:text="${data.id}"></option> 
+                                                        <option th:each="data:${dataEmp}" th:value="${data.id}" th:text="${data.firstName+' '+data.lastName}"></option> 
                                                     </select> 
                                                 </div> 
                                             </div>
-                                            
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-success" id="confirm">Save</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                        <h3> Are you sure to Cancel this Request? </h3>
+
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success" id="confirm">Yes, Cancel</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-            <!-- end-->            
-            <!--main content end-->
+                </div>  
+            </div>
 
         </section>
         <!--footer start-->
@@ -396,18 +519,51 @@
             <script src="dist/lib/common-scripts.js"></script>
             <!--script for this page-->
             <script type="text/javascript">
-                $(document).ready(function () {  
-                    var oTable = $('#hidden-table-info').dataTable({                       
-                    }); 
+                $(document).ready(function () {
+                    var oTable = $('#hidden-table-info').dataTable({
+                    });
                 });
             </script>
             <script type="text/javascript">
-                $(document).ready(function () {  
-                    var oTable = $('#hidden-table-info2').dataTable({                       
-                    }); 
+                $(document).ready(function () {
+                    var oTable = $('#hidden-table-info2').dataTable({
+                    });
                 });
             </script>
-            
+            <!--script for detail-->
+            <script>
+                $(document).ready(function () {
+                    $('.table .bBtn').on('click', function (event) {
+                        event.preventDefault();
+                        var href = $(this).attr('href');
+                        $.get(href, function (repair, status) {
+                            $('.myForm #id').val(repair.id);
+                            $('.myForm #detailAsset').val(repair.statusNote);
+                            $('.myForm #quantity').val(repair.quantity);
+                            $('.myForm #note').val(repair.note);
+                            $('.myForm #employee').val(repair.isDelete);
+                        });
+                        $('.myForm #detailRepair').modal();
+                    });
+                });
+            </script>
+            <!--script for cancel-->
+            <script>
+                $(document).ready(function () {
+                    $('.table .cBtn').on('click', function (event) {
+                        event.preventDefault();
+                        var href = $(this).attr('href');
+                        $.get(href, function (repair, status) {
+                            $('.myForm #id').val(repair.id);
+                            $('.myForm #detailAsset').val(repair.statusNote);
+                            $('.myForm #quantity').val(repair.quantity);
+                            $('.myForm #note').val(repair.note);
+                            $('.myForm #employee').val(repair.isDelete);
+                        });
+                        $('.myForm #cancelRepair').modal();
+                    });
+                });
+            </script>
         </div>
     </body>
 

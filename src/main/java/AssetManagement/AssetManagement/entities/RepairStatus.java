@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -41,7 +40,7 @@ public class RepairStatus implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 20)
     @Column(name = "id")
     private String id;
     @Basic(optional = false)
@@ -49,12 +48,6 @@ public class RepairStatus implements Serializable {
     @Column(name = "status_date")
     @Temporal(TemporalType.DATE)
     private Date statusDate;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Size(min = 1, max = 65535)
-    @Column(name = "status_note")
-    private String statusNote;
     @JoinColumn(name = "status", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Status status;
@@ -69,10 +62,9 @@ public class RepairStatus implements Serializable {
         this.id = id;
     }
 
-    public RepairStatus(String id, Date statusDate, String statusNote) {
+    public RepairStatus(String id, Date statusDate) {
         this.id = id;
         this.statusDate = statusDate;
-        this.statusNote = statusNote;
     }
 
     public String getId() {
@@ -89,14 +81,6 @@ public class RepairStatus implements Serializable {
 
     public void setStatusDate(Date statusDate) {
         this.statusDate = statusDate;
-    }
-
-    public String getStatusNote() {
-        return statusNote;
-    }
-
-    public void setStatusNote(String statusNote) {
-        this.statusNote = statusNote;
     }
 
     public Status getStatus() {
